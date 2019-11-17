@@ -1,7 +1,10 @@
 package com.danielminami.robotlistmvp.presenter;
 
+import com.danielminami.robotlistmvp.model.Robot;
 import com.danielminami.robotlistmvp.repository.RobotRepository;
 import com.danielminami.robotlistmvp.view.MainActivityView;
+
+import java.util.List;
 
 // For testing, this class will be instantiated with the MockView and MockPresenter.
 public class MainActivityPresenter {
@@ -16,7 +19,12 @@ public class MainActivityPresenter {
     }
 
     public void loadRobots() {
-        view.displayRobots(robotRepository.getRobots());
+        List<Robot> robotList = robotRepository.getRobots();
+        if (robotList.isEmpty()) {
+            view.diplayRobotsEmpty();
+        } else {
+            view.displayRobots(robotList);
+        }
     }
 
 }

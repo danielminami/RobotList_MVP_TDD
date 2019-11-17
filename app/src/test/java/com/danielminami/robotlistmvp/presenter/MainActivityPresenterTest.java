@@ -8,6 +8,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -28,7 +29,7 @@ public class MainActivityPresenterTest {
 
         //Given - Initial condition
         MainActivityView view = new MockView();
-        RobotRepository robotRepository = new MockRobotRepository();
+        RobotRepository robotRepository = new MockRobotRepository(false);
         MainActivityPresenter presenter = new MainActivityPresenter(view, robotRepository);
 
         //When - Action
@@ -41,10 +42,34 @@ public class MainActivityPresenterTest {
 
     }
 
+    @Test
+    public void shouldFailEmptyRobtList() {
+
+        //Given - Initial condition
+        MainActivityView view = new MockView();
+        RobotRepository robotRepository = new MockRobotRepository(true);
+        MainActivityPresenter presenter = new MainActivityPresenter(view, robotRepository);
+
+        //When - Action
+        presenter.loadRobots();
+
+        //Then - Return result
+        //I need to cast here because the declared type of the view is MainActivityView and this
+        // is the parent class os MockView and so it does not know about the MockView attribute.
+        Assert.assertEquals(false, ((MockView)view).passed);
+
+
+    }
+
 
     public class MockView implements MainActivityView {
 
         boolean passed;
+
+        @Override
+        public void diplayRobotsEmpty() {
+            passed = false;
+        }
 
         @Override
         public void displayRobots(List<Robot> robotList) {
@@ -54,9 +79,19 @@ public class MainActivityPresenterTest {
 
     public class MockRobotRepository implements RobotRepository {
 
+        private boolean isEmpty;
+
+        public MockRobotRepository(boolean isEmpty) {
+            this.isEmpty = isEmpty;
+        }
+
         @Override
         public List<Robot> getRobots() {
-            return Arrays.asList(new Robot(), new Robot(), new Robot());
+            if (isEmpty) {
+                return Collections.emptyList();
+            } else {
+                return Arrays.asList(new Robot(), new Robot(), new Robot());
+            }
         }
     }
 }
