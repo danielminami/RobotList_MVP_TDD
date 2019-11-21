@@ -20,8 +20,9 @@ public class MainActivityPresenter {
 
     public void loadRobots() {
         List<Robot> robotList = robotRepository.getRobots();
+
         if (robotList.isEmpty()) {
-            view.diplayRobotsEmpty();
+            view.displayRobotsEmpty();
         } else {
             view.displayRobots(robotList);
         }

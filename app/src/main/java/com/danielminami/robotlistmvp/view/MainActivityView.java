@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface MainActivityView {
 
-    void diplayRobotsEmpty();
+    void displayRobotsEmpty();
 
     void displayRobots(List<Robot> robotList);
 
