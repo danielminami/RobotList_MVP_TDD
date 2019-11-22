@@ -1,7 +1,10 @@
 package com.danielminami.robotlistmvp.presenter;
 
+import android.util.Log;
+
 import com.danielminami.robotlistmvp.model.Robot;
 import com.danielminami.robotlistmvp.repository.RobotRepository;
+import com.danielminami.robotlistmvp.repository.RobotsRepositoryInterface;
 import com.danielminami.robotlistmvp.view.MainActivityView;
 
 import java.util.List;
@@ -19,13 +22,19 @@ public class MainActivityPresenter {
     }
 
     public void loadRobots() {
-        List<Robot> robotList = robotRepository.getRobots();
+        robotRepository.getRobots(new RobotsRepositoryInterface() {
+            @Override
+            public void OnFinishedListener(List<Robot> robotList) {
+                Log.d("RETROFIT", "Was called");
+                view.displayRobots(robotList);
+            }
 
-        if (robotList.isEmpty()) {
-            view.displayRobotsEmpty();
-        } else {
-            view.displayRobots(robotList);
-        }
+            @Override
+            public void onFailure(Throwable t) {
+                Log.d("RETROFIT", t.toString());
+            }
+        });
+
     }
 
 }

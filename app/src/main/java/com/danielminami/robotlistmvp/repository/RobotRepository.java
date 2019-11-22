@@ -16,10 +16,8 @@ public class RobotRepository {
 
     List<Robot> robotList;
 
-    public List<Robot> getRobots() {
+    public void getRobots(final RobotsRepositoryInterface robotsRepositoryInterface) {
         String API_BASE_URL = "https://shopicruit.myshopify.com/";
-
-        //OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
         Retrofit.Builder builder = new Retrofit.Builder()
                         .baseUrl(API_BASE_URL)
@@ -43,16 +41,14 @@ public class RobotRepository {
                             productList.getProducts().get(i).getImage().getSrc());
                         robotList.add(robot);
                 }
-
+                robotsRepositoryInterface.OnFinishedListener(robotList);
             }
 
             @Override
             public void onFailure(Call<ProductList> call, Throwable t) {
-                robotList = new ArrayList<>();
+                robotsRepositoryInterface.onFailure(t);
             }
         });
-
-        return robotList;
 
     }
 
