@@ -25,7 +25,7 @@ public class MainActivityPresenter {
         robotRepository.getRobots(new RobotsRepositoryInterface() {
             @Override
             public void OnFinishedListener(List<Robot> robotList) {
-                Log.d("RETROFIT", "Was called");
+                //Log.d("RETROFIT", "Was called");
                 view.displayRobots(robotList);
             }
 
